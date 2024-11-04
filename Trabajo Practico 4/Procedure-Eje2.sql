@@ -6,7 +6,7 @@ BEGIN
     DECLARE MotivoV VARCHAR(255);
     DECLARE done INT DEFAULT FALSE;
     
-    -- Declaramos el cursor para seleccionar el ProductoId, Cantidad en Inventario
+    -- Declaramos el cursor para seleccionar el ProductoId en Inventario y Cantidad y motivo de CambiosInventario
     DECLARE cursor_HistorialInventario CURSOR FOR
     SELECT I.ProductoId, CI.Cantidad, CI.Motivo
     FROM Inventario AS I 
@@ -29,7 +29,7 @@ BEGIN
             SET Cantidad = Cantidad + CambioV
             WHERE ProductoId = ProductoIdV;
             
-            -- Insertar un registro en la tabla HistorialInventario y Motivo, Cambio de HistorialInventario
+            -- Insertar un registro en la tabla HistorialInventario
             INSERT INTO HistorialInventario (ProductoId, FechaCambio, Cambio, Motivo)
             VALUES (ProductoIdV, NOW(), CambioV, MotivoV);
             
