@@ -17,10 +17,10 @@
 
 ## CLAVES CANDIDATAS (Tabla: (clave_candidata))
 
--**Clientes**: (dniCliente)
--**Gerentes**: (dniGerente)
--**Hoteles**: (codHotel)
--**Estadías**: (dniCliente, codHotel, NumeroHabitacion, fechaInicioHospedaje)
+- **Clientes**: (dniCliente)
+- **Gerentes**: (dniGerente)
+- **Hoteles**: (codHotel)
+- **Estadías**: (dniCliente, codHotel, NumeroHabitacion, fechaInicioHospedaje)
 
 Clave candidata compuesta para la Tabla Estadías, para que cada registro sea único, sería:
     `dniCliente`, `codHotel`, `NumeroHabitacion`, `fechaInicioHospedaje`
