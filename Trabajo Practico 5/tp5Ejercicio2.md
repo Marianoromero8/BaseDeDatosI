@@ -1,4 +1,4 @@
-# TP 5 "Normalizacion
+# TP 5 Normalizacion
 
 ### DEPENDENCIAS FUNCIONALES
 
@@ -12,18 +12,18 @@
 3)	`codHotel` → `direccionHotel`, `ciudadHotel`, `cantidadHabitaciones`, `dniGerente`
     El `codHotel` es único, por lo que sirve para identificarlo; ya que puede haber más de un hotel en la misma direcciónHotel de una ciudadHotel.
 
-4)	`dniCliente`, `codHotel`, #Habitacion, `fechaInicioHospedaje` → `cantDiasHospedaje`
+4)	`dniCliente`, `codHotel`, NumeroHabitacion, `fechaInicioHospedaje` → `cantDiasHospedaje`
     Con el `DNICliente` se puede identificar quien realiza la estadía, a su vez que con el `codHotel`, `NumeroHabitacion` y `fechaInicioHospedaje` se sabe dónde y cuándo se realiza dicha estadía.
 
 ## CLAVES CANDIDATAS (Tabla: (clave_candidata))
 
-**Clientes**: (dniCliente)
-**Gerentes**: (dniGerente)
-**Hoteles**: (codHotel)
-**Estadías**: (dniCliente, codHotel, #Habitacion, fechaInicioHospedaje)
+**Clientes**: (dniCliente)\n
+**Gerentes**: (dniGerente)\n
+**Hoteles**: (codHotel)\n
+**Estadías**: (dniCliente, codHotel, NumeroHabitacion, fechaInicioHospedaje)
 
 Clave candidata compuesta para la Tabla Estadías, para que cada registro sea único, sería:
-    `dniCliente`, `codHotel`, #Habitacion, `fechaInicioHospedaje`
+    `dniCliente`, `codHotel`, `NumeroHabitacion`, `fechaInicioHospedaje`
 
 ## Diseño en Tercera Forma Normal (3FN)
 
