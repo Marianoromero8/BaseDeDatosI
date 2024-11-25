@@ -34,7 +34,7 @@
 -`direccion`
 -`email`
 
-**CREATE `Ordenes`**
+**Tabla `Ordenes`**
 -`orden_id` (Clave primaria)
 -`producto_id` (Clave foránea que referencia a Productos)
 -`cliente_id` (Clave foránea que referencia a Clientes)
