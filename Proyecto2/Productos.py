@@ -1,19 +1,29 @@
 import mysql.connector
+from dotenv import load_dotenv
+import os
+import mysql.connector
+
+load_dotenv()
 
 mydb = mysql.connector.connect(
   host="localhost",
   user="root",
-  password="Goliat97.",
+  password=os.getenv('DB_PASSWORD'),
   database="ventasEnLinea"
 )
 
 mycursor = mydb.cursor()
 
 def ListarProductos():
-    mycursor.execute("SELECT * FROM productos")
+    mycursor.execute("SELECT producto_id, nombre_producto, stock, precio FROM productos")
     resultados = mycursor.fetchall()
+    
+    print(f"{'ID':<10}{'Producto':<20}{'Stock':<10}{'Precio':<10}")
+    print("-" * 60)
+    
     for registro in resultados:
-        print(registro)
+        producto_id, nombre_producto, stock, precio = registro
+        print(f"{producto_id:<10}{nombre_producto:<20}{stock:<10}{precio:>10.2f}")
 
 def AgregarProducto(nombre_producto, stock, precio):
     sql = 'INSERT INTO Productos (nombre_producto, stock, precio) VALUES (%s, %s, %s)'
@@ -43,24 +53,24 @@ def menuProductos():
         print("3. Modificar producto")
         print("4. Eliminar producto")
         print("5. Salir")
-        opcion = int(input("Elija su opción: "))
-        if opcion == 1:
+        opcion = input("Elija su opción: ")
+        if opcion == '1':
             ListarProductos()
-        elif opcion == 2:
+        elif opcion == '2':
             nombre_producto = input("Ingrese el nombre del producto: ")
             stock = input("Ingrese el stock del producto: ")
             precio = input("Ingrese el precio del producto: ")
             AgregarProducto(nombre_producto, stock, precio)
-        elif opcion == 3:
+        elif opcion == '3':
             ListarProductos()
             producto_id = input("Ingrese el id del producto a modificar: ")
             nombre_producto = input("Ingrese el nombre del producto: ")
             stock = input("Ingrese el stock del producto: ")
             precio = input("Ingrese el precio del producto: ")
             ModificarProducto(producto_id, nombre_producto, stock, precio)
-        elif opcion == 4:
+        elif opcion == '4':
             ListarProductos()
             id = input("Ingrese el id del producto a eliminar: ")
             EliminarProducto(id)
-        elif opcion == 5:
+        elif opcion == '5':
             break

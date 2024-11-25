@@ -1,17 +1,23 @@
 import mysql.connector
+from dotenv import load_dotenv
+import os
+import mysql.connector
+
+load_dotenv()
 
 
 mydb = mysql.connector.connect(
   host="localhost",
   user="root",
-  password="Goliat97.",
+  password=os.getenv('DB_PASSWORD'),
   database="ventasEnLinea"
 )
 
 mycursor = mydb.cursor()
 
+
 def ListarClientes():
-    mycursor.execute("SELECT * FROM clientes")
+    mycursor.execute("SELECT cliente_id, nombre, apellido, telefono, direccion, email FROM clientes")
     resultados = mycursor.fetchall()
     for registro in resultados:
         print(registro)
@@ -30,11 +36,21 @@ def ModificarCliente(cliente_id, nombre, apellido, telefono, direccion, email):
     mydb.commit()
     print("cliente modificado")
 
-def EliminarCliente(cliente_id):
-    sql = f'DELETE FROM clientes WHERE cliente_id = {cliente_id}'
-    mycursor.execute(sql)
-    mydb.commit()
-    print("cliente eliminado")
+def EliminarCliente(nombre, apellido):
+    # Buscar el cliente por nombre y apellido de forma segura
+    sql = "SELECT cliente_id FROM clientes WHERE nombre = %s AND apellido = %s"
+    mycursor.execute(sql, (nombre, apellido))
+    cliente = mycursor.fetchone()
+
+    if cliente:
+        # Si el cliente existe, obtener su cliente_id
+        cliente_id = cliente[0]
+        sql = "DELETE FROM clientes WHERE cliente_id = %s"
+        mycursor.execute(sql, (cliente_id,))
+        mydb.commit()
+        print(f"Cliente {nombre} {apellido} eliminado")
+    else:
+        print(f"No se encontró un cliente con el nombre {nombre} y apellido {apellido}")
 
 def menuClientes():
     while True:
@@ -43,28 +59,29 @@ def menuClientes():
         print("3. Modificar cliente")
         print("4. Eliminar cliente")
         print("5. Salir")
-        opcion = int(input("Elija su opción: "))
-        if opcion == 1:
+        opcion = input("Elija su opción: ")
+        if opcion == '1':
             ListarClientes()
-        elif opcion == 2:
+        elif opcion == '2':
             nombre = input("Ingrese el nombre del cliente: ")
             apellido = input("Ingrese el apellido del cliente: ")
             telefono = input("Ingrese el telefono del cliente: ")
             direccion = input("Ingrese la direccion del cliente: ")
             email = input("Ingrese el email del cliente: ")
             AgregarCliente(nombre, apellido, telefono, direccion, email)
-        elif opcion == 3:
+        elif opcion == '3':
             ListarClientes()
             cliente_id = input("Ingrese el id del cliente a modificar: ")
-            nombre = input("Ingrese el nombre del cliente: ")
-            apellido = input("Ingrese el apellido del cliente: ")
-            telefono = input("Ingrese el telefono del cliente: ")
-            direccion = input("Ingrese la direccion del cliente: ")
-            email = input("Ingrese el email del cliente: ")
+            nombre = input("Ingrese el nuevo nombre del cliente: ")
+            apellido = input("Ingrese el nuevo apellido del cliente: ")
+            telefono = input("Ingrese el nuevo telefono del cliente: ")
+            direccion = input("Ingrese la nueva direccion del cliente: ")
+            email = input("Ingrese el nuevo email del cliente: ")
             ModificarCliente(cliente_id, nombre, apellido, telefono, direccion, email)
-        elif opcion == 4:
+        elif opcion == '4':
             ListarClientes()
-            id = input("Ingrese el id del cliente a eliminar: ")
-            EliminarCliente(cliente_id)
-        elif opcion == 5:
+            nombre = input("Ingrese el nombre del cliente a eliminar: ")
+            apellido = input("Ingrese el apellido del cliente a eliminar: ")
+            EliminarCliente(nombre, apellido)
+        elif opcion == '5':
             break
