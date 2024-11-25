@@ -1,3 +1,4 @@
+-- Creacion de tablas
 CREATE TABLE Productos (
     producto_id INT AUTO_INCREMENT PRIMARY KEY,
     nombre_producto VARCHAR(100) NOT NULL,
@@ -19,6 +20,6 @@ CREATE TABLE Ordenes(
     cantidad INT NOT NULL,
     motivo VARCHAR(255) NOT NULL,
     fecha DATETIME NOT NULL,
-    FOREIGN KEY (cliente_id) REFERENCES Clientes(cliente_id),
-    FOREIGN KEY (producto_id) REFERENCES Productos(producto_id)
+    FOREIGN KEY (cliente_id) REFERENCES Clientes(cliente_id) ON DELETE CASCADE,
+    FOREIGN KEY (producto_id) REFERENCES Productos(producto_id) ON DELETE CASCADE
 );
