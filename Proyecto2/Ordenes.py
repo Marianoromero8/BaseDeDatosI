@@ -9,8 +9,10 @@ mydb = mysql.connector.connect(
   database="ventasEnLinea"
 )
 
+
 mycursor = mydb.cursor()
 
+# 100 entradas son demasiadas mejor hacer busqueda por cliente id
 def ListarOrdenes():
     mycursor.execute("SELECT * FROM ordenes")
     resultados = mycursor.fetchall()
@@ -105,13 +107,22 @@ def mostrarOrdenesdeProducto(producto_id):
     else:
         print(f"No se encontraron órdenes para el Producto ID {producto_id}.")
 
+def ejecutar_ajustar_cantidad_producto(producto_id, cantidad_maxima):
+        mycursor.callproc('ajustar_cantidad_producto', [producto_id, cantidad_maxima])
+        
+        for result in mycursor.stored_results():
+            mensaje = result.fetchone()[0]  # Extraer el mensaje del primer (y único) resultado
+            print(mensaje)
+        mydb.commit()
+
 def menuOrdenes():
     while True:
         print("1. Mostrar orden por cliente")
         print("2. Mostrar productos mas vendidos")
         print("3. Ajustar cantidad de productos")
-        print("4. Mostrar orden por productos")
-        print("5. Salir")
+        print("4. Ajustar la cantidad del producto")
+        print("5. Mostrar orden por productos")
+        print("6. Salir")
         opcion = input("Elija su opción: ")
         if opcion == '1':
             print("Lista de clientes:")
@@ -132,5 +143,11 @@ def menuOrdenes():
             ListarProductos()
             producto_id = int(input("Ingrese el id del producto: "))
             mostrarOrdenesdeProducto(producto_id)
+            cantidad_maxima = int(input("Ingrese la cantidad máxima de productos por orden: "))
+            ejecutar_ajustar_cantidad_producto(producto_id, cantidad_maxima)
         elif opcion == '5':
+            ListarProductos()
+            producto_id = int(input("Ingrese el id del producto: "))
+            mostrarOrdenesdeProducto(producto_id)
+        elif opcion == '6':
             break
